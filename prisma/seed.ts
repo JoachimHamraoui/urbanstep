@@ -1,17 +1,22 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
+
 
 async function main() {
   console.log("Seeding database...");
 
+  // Hash password
+  const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10);
+
   // Create or update a test user (non-OAuth)
   const user = await prisma.user.upsert({
-    where: { email: "test@example.com" },
+    where: { email: "jh@admin.com" },
     update: {},
     create: {
-      email: "test@example.com",
-      name: "Test User",
-      password: "test", // In production, this should be hashed!
+      email: process.env.ADMIN_EMAIL!,
+      name: process.env.ADMIN_NAME!,
+      password: hashedPassword,
     },
   });
 

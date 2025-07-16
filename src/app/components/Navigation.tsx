@@ -4,9 +4,9 @@ import { useState } from "react";
 export default function Navigation() {
   const [search, setSearch] = useState("");
   return (
-    <nav className="w-full bg-white border-b shadow-sm sticky top-0 z-10">
+    <nav className="w-full bg-neutral-800 border-b shadow-sm sticky top-0 z-10">
       <div className="max-w-7xl mx-auto flex items-center justify-between p-4 gap-4">
-        <div className="text-2xl font-bold tracking-tight">UrbanStep</div>
+        <div className="text-2xl font-bold tracking-tight uppercase font-sans">UrbanStep_</div>
         <div className="flex-1 flex justify-center">
           <input
             type="text"

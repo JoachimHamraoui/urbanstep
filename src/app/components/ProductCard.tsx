@@ -25,26 +25,26 @@ export default function ProductCard({
   const price = prices[0];
   return (
     <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center hover:shadow-lg transition w-full max-w-xs">
-      <div className="w-full h-48 flex items-center justify-center bg-gray-100 rounded mb-4 overflow-hidden">
+      <div className="w-full h-64 flex items-center justify-center bg-gray-100 rounded mb-4 overflow-hidden">
         {image ? (
           <Image
             src={image}
             alt={title}
             width={200}
             height={192}
-            style={{ objectFit: "contain", height: "100%", width: "auto" }}
+            style={{ objectFit: "fill", width: "100%" }}
           />
         ) : (
           <div className="text-gray-400">No image</div>
         )}
       </div>
       <div className="w-full flex-1 flex flex-col">
-        <h2 className="font-semibold text-lg mb-1 truncate" title={title}>
+        <h2 className="font-semibold text-xl mb-1 truncate text-neutral-800 uppercase font-sans" title={title}>
           {title}
         </h2>
-        <p className="text-gray-600 text-sm mb-2 line-clamp-2">{description}</p>
+        <p className="text-gray-600 text-sm -mt-1 line-clamp-2">{description}</p>
         {price && (
-          <div className="mt-auto font-bold text-base">
+          <div className="mt-auto font-bold text-base text-neutral-800">
             {price.unit_amount
               ? `${(price.unit_amount / 100).toFixed(
                   2

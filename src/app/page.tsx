@@ -28,10 +28,10 @@ export default async function Home() {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
       <main className="max-w-7xl mx-auto px-4 py-10">
-        <h1 className="text-3xl font-bold mb-8 text-center">Shop Products</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center text-neutral-800 font-sans font-">Shop Products</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.length === 0 ? (
-            <div className="col-span-full text-center text-gray-500">
+            <div className="col-span-full text-center text-neutral-800">
               No products found.
             </div>
           ) : (

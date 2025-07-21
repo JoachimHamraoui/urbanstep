@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { FaCartShopping } from "react-icons/fa6";
 
 export default function Navigation() {
   const [search, setSearch] = useState("");
@@ -16,24 +17,8 @@ export default function Navigation() {
             className="w-full max-w-md px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-black"
           />
         </div>
-        <button className="relative p-2 rounded hover:bg-gray-100 transition">
-          {/* Placeholder cart icon */}
-          <svg
-            width="28"
-            height="28"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <circle cx="9" cy="21" r="1" />
-            <circle cx="20" cy="21" r="1" />
-            <path
-              d="M1 1h2l.4 2M7 13h10l4-8H5.4"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+        <button className="relative p-2 rounded hover:text-red-500 hover:cursor-pointer transition duration-300 ease-in-out">
+          <FaCartShopping />
         </button>
       </div>
     </nav>

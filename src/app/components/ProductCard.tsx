@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "../context/CartContext";
+import AddToCartButton from "./AddToCartButton";
 
 interface Price {
   id: string;
@@ -25,7 +25,6 @@ export default function ProductCard({
   image,
   prices,
 }: ProductCardProps) {
-  const { addToCart } = useCart();
   const price = prices[0];
 
   return (
@@ -36,7 +35,12 @@ export default function ProductCard({
       >
         <div className="w-full h-64 flex items-center justify-center bg-gray-100 rounded mb-4 overflow-hidden relative">
           {image ? (
-            <Image src={image} alt={title} fill style={{ objectFit: "cover" }} />
+            <Image
+              src={image}
+              alt={title}
+              fill
+              style={{ objectFit: "cover" }}
+            />
           ) : (
             <div className="text-gray-400">No image</div>
           )}
@@ -53,31 +57,24 @@ export default function ProductCard({
           </p>
           {price && (
             <div className="mt-auto font-bold text-base text-neutral-800">
-              {(price.unit_amount / 100).toFixed(2)} {price.currency.toUpperCase()}
+              {(price.unit_amount / 100).toFixed(2)}{" "}
+              {price.currency.toUpperCase()}
             </div>
           )}
         </div>
       </Link>
 
-      <button
+      <AddToCartButton
+        product={{ id, title, image }}
+        price={price}
+        className="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
         onClick={(e) => {
           e.stopPropagation(); // ✅ Stops the link click event
           e.preventDefault(); // ✅ Stops Link navigation
-          if (price) {
-            addToCart({
-              id,
-              title,
-              priceId: price.id,
-              currency: price.currency,
-              unit_amount: price.unit_amount,
-              quantity: 1,
-            });
-          }
         }}
-        className="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
       >
         Add to cart
-      </button>
+      </AddToCartButton>
     </div>
   );
 }

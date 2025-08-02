@@ -4,7 +4,7 @@ import Image from "next/image";
 import Navigation from "./Navigation";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
-import { useCart } from "../context/CartContext";
+import AddToCartButton from "./AddToCartButton";
 
 interface Price {
   id: string;
@@ -25,21 +25,7 @@ interface ProductDetailsProps {
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-  const { addToCart } = useCart();
   const price = product.prices[0];
-
-  const handleAddToCart = () => {
-    if (price) {
-      addToCart({
-        id: product.id,
-        title: product.title,
-        priceId: price.id,
-        currency: price.currency,
-        unit_amount: price.unit_amount,
-        quantity: 1,
-      });
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,12 +65,13 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                   : "-"}
               </div>
             )}
-            <button
-              onClick={handleAddToCart}
+            <AddToCartButton
+              product={product}
+              price={price}
               className="w-full bg-black text-white py-3 rounded hover:bg-gray-800 transition font-semibold"
             >
               Add to cart
-            </button>
+            </AddToCartButton>
           </div>
         </div>
       </main>

@@ -4,30 +4,21 @@ services:
       context: .
     image: nextjs-dev
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment:
       - NODE_ENV=development
       - DATABASE_URL=${DATABASE_URL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
     volumes:
       - ./src:/app/src
       - ./prisma:/app/prisma
       - ./public:/app/public
       - ./next.config.ts:/app/next.config.ts
       - ./tsconfig.json:/app/tsconfig.json
-    develop:
-      watch:
-        - action: sync
-          path: ./src
-          target: /app/src
-          ignore:
-            - node_modules
-        - action: sync
-          path: ./prisma
-          target: /app/prisma
-          ignore:
-            - node_modules
-        - action: rebuild
-          path: ./package.json
+    env_file:
+      - .env
   db:
     image: postgres:15-alpine
     environment:
@@ -35,4 +26,4 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"

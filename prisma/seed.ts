@@ -1,23 +1,26 @@
 import { PrismaClient } from "@prisma/client";
-
+import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 
+
 async function main() {
-  // Add your seed data here
   console.log("Seeding database...");
 
-  // Create a test user (or update if exists)
+  // Hash password
+  const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10);
+
+  // Create or update a test user (non-OAuth)
   const user = await prisma.user.upsert({
-    where: { email: "test@example.com" },
+    where: { email: "jh@admin.com" },
     update: {},
     create: {
-      email: "test@example.com",
-      name: "Test User",
-      password: "test",
+      email: process.env.ADMIN_EMAIL!,
+      name: process.env.ADMIN_NAME!,
+      password: hashedPassword,
     },
   });
 
-  // Seed Products
+  // Create Products
   const product1 = await prisma.product.upsert({
     where: { id: "prod1" },
     update: {},
@@ -25,10 +28,10 @@ async function main() {
       id: "prod1",
       name: "Urban Step Shoes",
       price: 99.99,
-      image:
-        "https://images.unsplash.com/photo-1517260911205-8a3b66e655a4?auto=format&fit=crop&w=400&q=80",
+      image: "https://images.unsplash.com/photo-1517260911205-8a3b66e655a4?auto=format&fit=crop&w=400&q=80",
     },
   });
+
   const product2 = await prisma.product.upsert({
     where: { id: "prod2" },
     update: {},
@@ -36,12 +39,11 @@ async function main() {
       id: "prod2",
       name: "Urban Step Backpack",
       price: 49.99,
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
     },
   });
 
-  // Seed Address
+  // Create Address
   const address = await prisma.address.upsert({
     where: { id: "addr1" },
     update: {},
@@ -54,7 +56,7 @@ async function main() {
     },
   });
 
-  // Seed Order (idempotent)
+  // Create Order with items
   const order = await prisma.order.upsert({
     where: { orderNumber: "ORDER-001" },
     update: {},

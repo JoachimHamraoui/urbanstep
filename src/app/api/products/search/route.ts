@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-// Validate environment variables
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeSecretKey) {
-  throw new Error("STRIPE_SECRET_KEY environment variable is not set");
-}
-
-const stripe = new Stripe(stripeSecretKey);
-
 export async function GET(request: Request) {
   try {
+    // Validate environment variables at runtime
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeSecretKey) {
+      return NextResponse.json(
+        { error: "Stripe configuration is missing" },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecretKey);
     const { searchParams } = new URL(request.url);
     const query = searchParams.get("q");
 
@@ -51,7 +53,10 @@ export async function GET(request: Request) {
         };
       });
 
-    return NextResponse.json({ products: productsWithDetails }, { status: 200 });
+    return NextResponse.json(
+      { products: productsWithDetails },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Search failed:", error);
     return NextResponse.json(

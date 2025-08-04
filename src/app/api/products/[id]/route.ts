@@ -1,19 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-// Validate environment variables
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeSecretKey) {
-  throw new Error("STRIPE_SECRET_KEY environment variable is not set");
-}
-
-const stripe = new Stripe(stripeSecretKey);
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Validate environment variables at runtime
+    const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+    if (!stripeSecretKey) {
+      return NextResponse.json(
+        { error: "Stripe configuration is missing" },
+        { status: 500 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecretKey);
     const { id } = await params;
 
     // Fetch the product by ID
@@ -37,7 +39,7 @@ export async function GET(
 
     return NextResponse.json({ product: productWithDetails }, { status: 200 });
   } catch (error) {
-    console.error(`Failed to fetch product ${params}:`, error);
+    console.error(`Failed to fetch product:`, error);
     return NextResponse.json(
       { error: "Failed to fetch product" },
       { status: 500 }

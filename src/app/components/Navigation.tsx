@@ -92,6 +92,9 @@ export default function Navigation({ initialSearch }: NavigationProps) {
         <div className="text-2xl font-bold tracking-tight uppercase font-sans">
           UrbanStep_
         </div>
+        <div className="text-sm text-red-400 font-bold uppercase">
+          DEMO - ONLY USE STRIPE TEST CARD
+        </div>
         <div className="flex-1 flex justify-center">
           <div className="relative w-full max-w-md" ref={searchRef}>
             <input

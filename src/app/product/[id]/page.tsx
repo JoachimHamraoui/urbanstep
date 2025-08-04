@@ -4,9 +4,10 @@ import { apiClient } from "../../../lib/api";
 export default async function ProductPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const product = await apiClient.getProduct(params.id);
+  const { id } = await params;
+  const product = await apiClient.getProduct(id);
 
   if (!product) {
     return (

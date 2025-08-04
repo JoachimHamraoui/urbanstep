@@ -1,12 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  const { id } = params;
+  const { id } = await params;
 
   // Fetch the product by ID
   const product = await stripe.products.retrieve(id);

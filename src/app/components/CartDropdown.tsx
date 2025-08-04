@@ -3,6 +3,7 @@
 import { useCart } from "../context/CartContext";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import Image from "next/image";
+import { apiClient } from "../../lib/api";
 
 interface CartDropdownProps {
   isOpen: boolean;
@@ -13,14 +14,15 @@ export default function CartDropdown({ isOpen }: CartDropdownProps) {
   const { cart, clearCart, updateQuantity } = useCart();
 
   const handleCheckout = async () => {
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cart }),
-    });
-
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
+    try {
+      const response = await apiClient.createCheckoutSession(cart);
+      if (response.url) {
+        window.location.href = response.url;
+      }
+    } catch (error) {
+      console.error("Checkout failed:", error);
+      alert("Failed to create checkout session. Please try again.");
+    }
   };
 
   const totalAmount = cart.reduce(

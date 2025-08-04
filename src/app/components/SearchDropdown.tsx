@@ -3,20 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface Price {
-  id: string;
-  currency: string;
-  unit_amount: number;
-}
-
-interface Product {
-  id: string;
-  title: string;
-  description: string | null;
-  image: string | null;
-  prices: Price[];
-}
+import { apiClient, Product } from "../../lib/api";
 
 interface SearchDropdownProps {
   isOpen: boolean;
@@ -41,13 +28,8 @@ export default function SearchDropdown({
     const searchProducts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/products/search?q=${encodeURIComponent(searchQuery)}`
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setResults(data.products);
-        }
+        const products = await apiClient.searchProducts(searchQuery);
+        setResults(products);
       } catch (error) {
         console.error("Search failed:", error);
         setResults([]);

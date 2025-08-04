@@ -3,33 +3,12 @@
 import { useState, useEffect } from "react";
 import Navigation from "./components/Navigation";
 import ProductCard from "./components/ProductCard";
-
-interface Price {
-  id: string;
-  currency: string;
-  unit_amount: number;
-}
-
-interface ProductCardProps {
-  id: string;
-  title: string;
-  description: string | null;
-  image: string | null;
-  prices: Price[];
-}
-
-async function fetchProducts() {
-  const res = await fetch("http://localhost:3000/api/products/get", {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  const data = await res.json();
-  return data.products as ProductCardProps[];
-}
+import { apiClient, Product } from "../lib/api";
 
 export default function Home() {
-  const [products, setProducts] = useState<ProductCardProps[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Load products on component mount
   useEffect(() => {
@@ -38,11 +17,14 @@ export default function Home() {
 
   const loadProducts = async () => {
     setLoading(true);
+    setError(null);
+
     try {
-      const fetchedProducts = await fetchProducts();
+      const fetchedProducts = await apiClient.getProducts();
       setProducts(fetchedProducts);
     } catch (error) {
       console.error("Failed to fetch products:", error);
+      setError("Failed to load products. Please try again later.");
       setProducts([]);
     } finally {
       setLoading(false);
@@ -59,6 +41,16 @@ export default function Home() {
         {loading ? (
           <div className="text-center py-8">
             <p className="text-neutral-800">Loading products...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-8">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={loadProducts}
+              className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+            >
+              Try Again
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

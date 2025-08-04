@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "./AddToCartButton";
 
@@ -35,11 +34,10 @@ export default function ProductCard({
       >
         <div className="w-full h-64 flex items-center justify-center bg-gray-100 rounded mb-4 overflow-hidden relative">
           {image ? (
-            <Image
+            <img
               src={image}
               alt={title}
-              fill
-              style={{ objectFit: "cover" }}
+              className="w-full h-full object-cover"
             />
           ) : (
             <div className="text-gray-400">No image</div>

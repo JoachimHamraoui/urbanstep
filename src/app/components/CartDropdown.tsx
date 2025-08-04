@@ -2,7 +2,6 @@
 
 import { useCart } from "../context/CartContext";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import Image from "next/image";
 import { apiClient } from "../../lib/api";
 
 interface CartDropdownProps {
@@ -61,12 +60,10 @@ export default function CartDropdown({ isOpen }: CartDropdownProps) {
                 >
                   <div className="w-12 h-12 flex-shrink-0 bg-gray-200 rounded overflow-hidden relative">
                     {item.image ? (
-                      <Image
+                      <img
                         src={item.image}
                         alt={item.title}
-                        fill
-                        style={{ objectFit: "cover" }}
-                        className="rounded"
+                        className="w-full h-full object-cover rounded"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">

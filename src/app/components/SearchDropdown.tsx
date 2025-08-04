@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { apiClient, Product } from "../../lib/api";
 
@@ -64,12 +63,10 @@ export default function SearchDropdown({
               >
                 <div className="w-12 h-12 flex-shrink-0 bg-gray-200 rounded overflow-hidden relative">
                   {product.image ? (
-                    <Image
+                    <img
                       src={product.image}
                       alt={product.title}
-                      fill
-                      style={{ objectFit: "cover" }}
-                      className="rounded"
+                      className="w-full h-full object-cover rounded"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">

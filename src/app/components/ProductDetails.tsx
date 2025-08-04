@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Navigation from "./Navigation";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
@@ -39,11 +38,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         <div className="bg-white rounded-lg shadow p-6 flex flex-row">
           <div className="w-1/2 h-124 flex items-center justify-center bg-gray-100 rounded mb-6 overflow-hidden relative">
             {product.image ? (
-              <Image
+              <img
                 src={product.image}
                 alt={product.title}
-                fill
-                style={{ objectFit: "cover" }}
+                className="w-full h-full object-cover"
               />
             ) : (
               <div className="text-gray-400">No image</div>

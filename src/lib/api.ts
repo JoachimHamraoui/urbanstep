@@ -1,7 +1,5 @@
 // API service for centralized data fetching
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-
 export interface Price {
   id: string;
   currency: string;
@@ -65,7 +63,8 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const url = `${API_BASE_URL}${endpoint}`;
+    // Use relative URL - this will automatically use the current domain
+    const url = endpoint;
 
     try {
       const response = await fetch(url, {
@@ -146,7 +145,8 @@ class ApiClient {
 
   // Product upload API
   async uploadProduct(formData: FormData): Promise<UploadResponse> {
-    const url = `${API_BASE_URL}/api/products/add`;
+    // Use relative URL for upload as well
+    const url = "/api/products/add";
 
     try {
       const response = await fetch(url, {

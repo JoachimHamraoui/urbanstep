@@ -6,20 +6,27 @@ import type { UploadApiResponse } from 'cloudinary'
 
 export const runtime = 'nodejs'
 
+// Validate environment variables
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+if (!stripeSecretKey) {
+  throw new Error("STRIPE_SECRET_KEY environment variable is not set");
+}
+
+const stripe = new Stripe(stripeSecretKey);
 
 export async function POST(req: Request) {
-  const formData = await req.formData()
-
-  const name = formData.get('name') as string
-  const price = parseFloat(formData.get('price') as string)
-  const description = formData.get('description') as string
-  const imageFile = formData.get('image') as File
-
-  if (!name || !price || !imageFile) {
-    return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
-  }
-
   try {
+    const formData = await req.formData()
+
+    const name = formData.get('name') as string
+    const price = parseFloat(formData.get('price') as string)
+    const description = formData.get('description') as string
+    const imageFile = formData.get('image') as File
+
+    if (!name || !price || !imageFile) {
+      return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+    }
+
     // 1. Upload image to Cloudinary
     const buffer = Buffer.from(await imageFile.arrayBuffer())
     const uploadRes: UploadApiResponse = await new Promise((resolve, reject) => {
@@ -32,9 +39,6 @@ export async function POST(req: Request) {
     })
 
     // 2. Create product on Stripe
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
-
-
     const stripeProduct = await stripe.products.create({
       name,
       description,

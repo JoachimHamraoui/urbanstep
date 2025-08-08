@@ -97,7 +97,7 @@ class ApiClient {
   async getProduct(id: string): Promise<Product | null> {
     try {
       const response = await this.request<ProductResponse>(
-        `/api/products/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
         {
           cache: "no-store",
         }
